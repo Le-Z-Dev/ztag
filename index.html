@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carte Digitale - Le Z</title>
+    <title>Carte Digitale - Ztag</title>
 
     <!-- Import Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Cropper.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet" />
 
     <style>
         body {
@@ -19,8 +22,23 @@
             flex-direction: column;
             color: #333;
             text-align: center;
-            background: url("fond.jpg") no-repeat center center fixed;
+            background: url("images/fond.jpg") no-repeat center center fixed;
             background-size: cover;
+        }
+
+        .profile-container {
+            width: 150px;
+            height: 150px;
+            margin: 40px auto 15px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #444;
+        }
+
+        .profile-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         h1 {
@@ -29,7 +47,6 @@
             font-weight: 600;
         }
 
-        /* Icônes des apps */
         .icons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -56,8 +73,8 @@
         }
 
         .icons img {
-            width: 80px;
-            height: 80px;
+            width: 40px;
+            height: 40px;
         }
 
         footer {
@@ -70,97 +87,124 @@
             opacity: 0.8;
         }
 
-        /* Photo circulaire avec centrage automatique */
-        #image-container {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 40px auto 15px;
-            border: 4px solid #444;
-            position: relative;
+        #upload {
+            display: none;
         }
 
-        #image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
+        label[for="upload"] {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 6px 12px;
+            background: #444;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #download {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 6px 12px;
+            background: #28a745;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+        }
+
+        #download:hover {
+            background: #218838;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Photo de profil -->
-    <div id="image-container">
-        <img id="image" src="photo-profil.png" alt="Photo de profil">
+    <!-- Upload image -->
+    <label for="upload">Choisir une photo</label>
+    <input type="file" id="upload" accept="image/*">
+
+    <!-- Photo de profil avec Cropper.js -->
+    <div class="profile-container">
+        <img id="profile-pic" src="images/photo-profil.png" alt="Photo de profil">
     </div>
-    <input type="file" id="inputImage" accept="image/*">
+
+    <!-- Bouton téléchargement -->
+    <button id="download">Télécharger ma photo</button>
 
     <!-- Nom -->
     <h1>Le Z</h1>
 
     <!-- Icônes des applis -->
     <div class="icons">
-        <a href="vcard.vcf"><img src="vcard.png" alt="vCard"></a>
-        <a href="https://facebook.com/"><img src="facebook.png" alt="Facebook"></a>
-        <a href="https://wa.me/2290197456565?text=Bonjour%20Le%20Z,%20je%20suis%20intéressé%20par%20le%20Ztag"
-            target="_blank"><img src="whatsapp.png" alt="WhatsApp"></a>
-        <a href="https://snapchat.com/"><img src="snapchat.png" alt="Snapchat"></a>
-        <a href="https://tiktok.com/"><img src="tiktok.png" alt="TikTok"></a>
-        <a href="https://instagram.com/"><img src="instagram.png" alt="Instagram"></a>
+        <a href="vcard.vcf"><img src="images/vcard.png" alt="vCard"></a>
+        <a href="https://facebook.com/"><img src="images/facebook.png" alt="Facebook"></a>
+        <a href="https://wa.me/2290197456565"><img src="images/whatsapp.png" alt="WhatsApp"></a>
+        <a href="https://snapchat.com/"><img src="images/snapchat.png" alt="Snapchat"></a>
+        <a href="https://tiktok.com/"><img src="images/tiktok.png" alt="TikTok"></a>
+        <a href="https://instagram.com/"><img src="images/instagram.png" alt="Instagram"></a>
     </div>
 
-    <!-- Footer -->
+    <!-- Logo -->
     <footer>
         <p style="margin:0; font-weight:600;">Ztag by
             <a href="https://wa.me/2290197456565?text=Bonjour%20Le%20Z,%20je%20suis%20intéressé%20par%20le%20Ztag"
                 target="_blank">
-                <img src="logo.png" alt="Logo" class="logo">
+                <img src="images/logo.png" alt="Logo" class="logo">
             </a>
         </p>
     </footer>
 
-    <!-- JS pour détection visage avec face-api.js -->
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+    <!-- Cropper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <!-- JS pour Cropper et téléchargement -->
     <script>
-        const input = document.getElementById('inputImage');
-        const image = document.getElementById('image');
+        const upload = document.getElementById('upload');
+        const profilePic = document.getElementById('profile-pic');
+        const downloadBtn = document.getElementById('download');
+        let cropper;
 
-        Promise.all([
-            faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models')
-        ]).then(() => {
-            input.addEventListener('change', async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-
+        upload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
                 const reader = new FileReader();
-                reader.onload = async function (event) {
-                    image.src = event.target.result;
+                reader.onload = e => {
+                    profilePic.src = e.target.result;
 
-                    image.onload = async function () {
-                        const detection = await faceapi.detectSingleFace(image, new faceapi.TinyFaceDetectorOptions());
-                        if (detection) {
-                            const { x, y, width, height } = detection.box;
-                            const centerX = x + width / 2;
-                            const centerY = y + height / 2;
-                            const container = document.getElementById('image-container');
-                            const scale = container.offsetWidth / width;
+                    // Détruire l'ancien cropper s'il existe
+                    if (cropper) cropper.destroy();
 
-                            image.style.width = `${image.naturalWidth * scale}px`;
-                            image.style.height = `${image.naturalHeight * scale}px`;
-                            image.style.left = `${container.offsetWidth / 2 - centerX * scale}px`;
-                            image.style.top = `${container.offsetHeight / 2 - centerY * scale}px`;
-                        } else {
-                            image.style.objectPosition = "center";
-                        }
-                    }
+                    // Initialiser Cropper.js
+                    cropper = new Cropper(profilePic, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                        background: false,
+                        zoomable: false,
+                        movable: false,
+                        cropBoxResizable: false
+                    });
                 };
                 reader.readAsDataURL(file);
-            });
+            }
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if (cropper) {
+                const canvas = cropper.getCroppedCanvas({
+                    width: 150,
+                    height: 150,
+                    imageSmoothingQuality: 'high'
+                });
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'photo-ztag.png';
+                link.click();
+            } else {
+                alert("Veuillez choisir une photo d'abord !");
+            }
         });
     </script>
 
