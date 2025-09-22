@@ -184,50 +184,70 @@
 
     <!-- Script pour injecter les données et générer vCard -->
     <script>
-        const userData = {
-            name: "Le Z",
-            phone: "+2290197456565",
-            email: "contact@example.com",
-            photo: "images/photo-profil.png",
-            social: {
-                facebook: "https://facebook.com/",
-                whatsapp: "https://wa.me/2290197456565",
-                snapchat: "https://snapchat.com/",
-                tiktok: "https://tiktok.com/",
-                instagram: "https://instagram.com/"
-            }
-        };
+        <script>
+            fetch('client.json')
+  .then(response => response.json())
+  .then(userData => {
+                document.getElementById("user-name").textContent = userData.name;
+            document.getElementById("background").style.backgroundImage = `url('${userData.photoBackground}')`;
 
-        // Injection du nom et de la photo en filigrane
-        document.getElementById("user-name").textContent = userData.name;
-        document.getElementById("background").style.backgroundImage = `url('${userData.photo}')`;
+            document.getElementById("facebook-link").href = userData.social.facebook;
+            document.getElementById("whatsapp-link").href = userData.social.whatsapp;
+            document.getElementById("snapchat-link").href = userData.social.snapchat;
+            document.getElementById("tiktok-link").href = userData.social.tiktok;
+            document.getElementById("instagram-link").href = userData.social.instagram;
 
-        // Liens réseaux sociaux
-        document.getElementById("facebook-link").href = userData.social.facebook;
-        document.getElementById("whatsapp-link").href = userData.social.whatsapp;
-        document.getElementById("snapchat-link").href = userData.social.snapchat;
-        document.getElementById("tiktok-link").href = userData.social.tiktok;
-        document.getElementById("instagram-link").href = userData.social.instagram;
-
-        // Génération dynamique vCard
-        document.getElementById("vcard-link").addEventListener("click", function (e) {
-            e.preventDefault();
+            document.getElementById("vcard-link").addEventListener("click", function (e) {
+                e.preventDefault();
             const vcardContent = `
-BEGIN:VCARD
-VERSION:3.0
-FN:${userData.name}
-TEL;TYPE=CELL:${userData.phone}
-EMAIL:${userData.email}
-END:VCARD
-`.trim();
-            const blob = new Blob([vcardContent], { type: "text/vcard;charset=utf-8" });
+            BEGIN:VCARD
+            VERSION:3.0
+            FN:${userData.name}
+            TEL;TYPE=CELL:${userData.phone}
+            EMAIL:${userData.email}
+            END:VCARD
+            `.trim();
+            const blob = new Blob([vcardContent], {type: "text/vcard;charset=utf-8" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             link.download = `${userData.name}.vcf`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        });
+    });
+  });
+    </script>
+
+    // Injection du nom et de la photo en filigrane
+    document.getElementById("user-name").textContent = userData.name;
+    document.getElementById("background").style.backgroundImage = `url('${userData.photo}')`;
+
+    // Liens réseaux sociaux
+    document.getElementById("facebook-link").href = userData.social.facebook;
+    document.getElementById("whatsapp-link").href = userData.social.whatsapp;
+    document.getElementById("snapchat-link").href = userData.social.snapchat;
+    document.getElementById("tiktok-link").href = userData.social.tiktok;
+    document.getElementById("instagram-link").href = userData.social.instagram;
+
+    // Génération dynamique vCard
+    document.getElementById("vcard-link").addEventListener("click", function (e) {
+    e.preventDefault();
+    const vcardContent = `
+    BEGIN:VCARD
+    VERSION:3.0
+    FN:${userData.name}
+    TEL;TYPE=CELL:${userData.phone}
+    EMAIL:${userData.email}
+    END:VCARD
+    `.trim();
+    const blob = new Blob([vcardContent], { type: "text/vcard;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${userData.name}.vcf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    });
     </script>
 
 </body>

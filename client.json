@@ -1,0 +1,13 @@
+{
+    "name": "Marie Dupont",
+    "phone": "+229012345678",
+    "email": "marie@example.com",
+    "photoBackground": "images/photo-marie.jpg",
+    "social": {
+        "facebook": "https://facebook.com/marie",
+        "whatsapp": "https://wa.me/229012345678",
+        "snapchat": "https://snapchat.com/add/marie",
+        "tiktok": "https://tiktok.com/@marie",
+        "instagram": "https://instagram.com/marie"
+    }
+}
