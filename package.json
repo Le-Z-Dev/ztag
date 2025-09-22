@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Le-Z-Dev/ztag#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "node-fetch": "^2.7.0"
