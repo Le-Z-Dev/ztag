@@ -23,10 +23,20 @@
             background-size: cover;
         }
 
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* centre verticalement */
+            align-items: center;
+            /* centre horizontalement */
+        }
+
         .profile-container {
             width: 150px;
             height: 150px;
-            margin: 40px auto 15px;
+            margin-bottom: 15px;
             border-radius: 50%;
             overflow: hidden;
             border: 4px solid #444;
@@ -49,7 +59,7 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             max-width: 320px;
-            margin: 0 auto 50px;
+            margin-bottom: 50px;
         }
 
         .icons a {
@@ -70,8 +80,8 @@
         }
 
         .icons img {
-            width: 40px;
-            height: 40px;
+            width: 70px;
+            height: 70px;
         }
 
         footer {
@@ -88,22 +98,24 @@
 
 <body>
 
-    <!-- Photo de profil fixe -->
-    <div class="profile-container">
-        <img id="profile-pic" src="photo-profil.png" alt="Photo de profil">
-    </div>
+    <div class="main-content">
+        <!-- Photo de profil -->
+        <div class="profile-container">
+            <img id="profile-pic" src="photo-profil.png" alt="Photo de profil">
+        </div>
 
-    <!-- Nom -->
-    <h1>Le Z</h1>
+        <!-- Nom -->
+        <h1>Le Z</h1>
 
-    <!-- Icônes des applis -->
-    <div class="icons">
-        <a href="vcard.vcf"><img src="vcard.png" alt="vCard"></a>
-        <a href="https://facebook.com/"><img src="facebook.png" alt="Facebook"></a>
-        <a href="https://wa.me/2290197456565"><img src="whatsapp.png" alt="WhatsApp"></a>
-        <a href="https://snapchat.com/"><img src="snapchat.png" alt="Snapchat"></a>
-        <a href="https://tiktok.com/"><img src="tiktok.png" alt="TikTok"></a>
-        <a href="https://instagram.com/"><img src="instagram.png" alt="Instagram"></a>
+        <!-- Icônes des applis -->
+        <div class="icons">
+            <a href="vcard.vcf"><img src="vcard.png" alt="vCard"></a>
+            <a href="https://facebook.com/"><img src="facebook.png" alt="Facebook"></a>
+            <a href="https://wa.me/2290197456565"><img src="whatsapp.png" alt="WhatsApp"></a>
+            <a href="https://snapchat.com/"><img src="snapchat.png" alt="Snapchat"></a>
+            <a href="https://tiktok.com/"><img src="tiktok.png" alt="TikTok"></a>
+            <a href="https://instagram.com/"><img src="instagram.png" alt="Instagram"></a>
+        </div>
     </div>
 
     <!-- Logo -->
