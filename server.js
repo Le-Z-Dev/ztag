@@ -5,7 +5,7 @@ const path = require('path');
 const fetch = require('node-fetch'); // npm install node-fetch@2
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'admin')));
+app.use(express.static(path.join(__dirname, 'docs')));
 app.use(express.json({ limit: '5mb' })); // pour Base64 des images
 
 // Endpoint pour recevoir le JSON et l'envoyer sur GitHub
