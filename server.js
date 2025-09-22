@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch'); // npm install node-fetch@2
-const cors = require('cors'); // npm install cors
+const cors = require('cors');
 const app = express();
 
 // ⚡ Activer CORS pour toutes les origines
@@ -16,7 +16,7 @@ app.use(express.json({ limit: '5mb' }));
 
 // Endpoint pour recevoir le JSON et l'envoyer sur GitHub
 app.post('/upload-json', async (req, res) => {
-    const userData = req.body; // ✅ correction
+    const userData = req.body.userData; // ✅ récupération correcte
 
     if (!userData || !userData.name) {
         return res.status(400).json({ success: false, error: 'Données utilisateur invalides.' });
