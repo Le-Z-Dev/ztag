@@ -46,20 +46,16 @@
 
         h1 {
             font-size: 3rem;
-            /* Nom plus grand */
             font-weight: 700;
             margin-bottom: 50px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             color: #000000;
-            /* Nom en noir */
         }
-
 
         .icons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
-            /* Espace entre les icônes sur desktop */
             max-width: 320px;
             margin-bottom: 50px;
         }
@@ -71,11 +67,8 @@
             width: 70px;
             height: 70px;
             background: none;
-            /* plus de fond blanc */
             border-radius: 0;
-            /* plus de contour arrondi */
             box-shadow: none;
-            /* plus d’ombre */
             transition: transform 0.3s;
             text-decoration: none;
         }
@@ -86,22 +79,22 @@
 
         .icons img {
             width: 100%;
-            /* remplissage complet du bloc */
             height: 100%;
             object-fit: contain;
-            /* garde la proportion de l’image */
         }
 
-        /* Mobile */
         @media (max-width: 400px) {
             .icons {
                 gap: 20px;
-                /* plus d’espace sur mobile */
             }
 
             .icons a {
                 width: 60px;
                 height: 60px;
+            }
+
+            h1 {
+                font-size: 2rem;
             }
         }
 
@@ -114,9 +107,7 @@
             color: #000;
             text-shadow: 1px 1px 3px rgba(107, 107, 107, 0.5);
             margin-top: 20px;
-            /* rapproche le footer du contenu */
             padding: 5px 0;
-            /* espace intérieur réduit */
         }
 
         .footer-text a img {
@@ -127,26 +118,6 @@
 
         .footer-text a img:hover {
             transform: scale(1.2);
-        }
-
-        @media (max-width: 400px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .icons {
-                gap: 15px;
-            }
-
-            .icons a {
-                width: 80px;
-                height: 80px;
-            }
-
-            .icons img {
-                width: 40px;
-                height: 40px;
-            }
         }
     </style>
 </head>
@@ -184,70 +155,42 @@
 
     <!-- Script pour injecter les données et générer vCard -->
     <script>
-        <script>
-            fetch('client.json')
-  .then(response => response.json())
-  .then(userData => {
+        fetch('client.json')
+            .then(response => response.json())
+            .then(userData => {
+                // Injection du nom et de la photo en filigrane
                 document.getElementById("user-name").textContent = userData.name;
-            document.getElementById("background").style.backgroundImage = `url('${userData.photoBackground}')`;
+                document.getElementById("background").style.backgroundImage = `url('${userData.photoBackground}')`;
 
-            document.getElementById("facebook-link").href = userData.social.facebook;
-            document.getElementById("whatsapp-link").href = userData.social.whatsapp;
-            document.getElementById("snapchat-link").href = userData.social.snapchat;
-            document.getElementById("tiktok-link").href = userData.social.tiktok;
-            document.getElementById("instagram-link").href = userData.social.instagram;
+                // Liens réseaux sociaux
+                document.getElementById("facebook-link").href = userData.social.facebook;
+                document.getElementById("whatsapp-link").href = userData.social.whatsapp;
+                document.getElementById("snapchat-link").href = userData.social.snapchat;
+                document.getElementById("tiktok-link").href = userData.social.tiktok;
+                document.getElementById("instagram-link").href = userData.social.instagram;
 
-            document.getElementById("vcard-link").addEventListener("click", function (e) {
-                e.preventDefault();
-            const vcardContent = `
-            BEGIN:VCARD
-            VERSION:3.0
-            FN:${userData.name}
-            TEL;TYPE=CELL:${userData.phone}
-            EMAIL:${userData.email}
-            END:VCARD
-            `.trim();
-            const blob = new Blob([vcardContent], {type: "text/vcard;charset=utf-8" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `${userData.name}.vcf`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-    });
-  });
-    </script>
+                // Génération dynamique vCard
+                document.getElementById("vcard-link").addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const vcardContent = `
+BEGIN:VCARD
+VERSION:3.0
+FN:${userData.name}
+TEL;TYPE=CELL:${userData.phone}
+EMAIL:${userData.email}
+END:VCARD
+                    `.trim();
 
-    // Injection du nom et de la photo en filigrane
-    document.getElementById("user-name").textContent = userData.name;
-    document.getElementById("background").style.backgroundImage = `url('${userData.photo}')`;
-
-    // Liens réseaux sociaux
-    document.getElementById("facebook-link").href = userData.social.facebook;
-    document.getElementById("whatsapp-link").href = userData.social.whatsapp;
-    document.getElementById("snapchat-link").href = userData.social.snapchat;
-    document.getElementById("tiktok-link").href = userData.social.tiktok;
-    document.getElementById("instagram-link").href = userData.social.instagram;
-
-    // Génération dynamique vCard
-    document.getElementById("vcard-link").addEventListener("click", function (e) {
-    e.preventDefault();
-    const vcardContent = `
-    BEGIN:VCARD
-    VERSION:3.0
-    FN:${userData.name}
-    TEL;TYPE=CELL:${userData.phone}
-    EMAIL:${userData.email}
-    END:VCARD
-    `.trim();
-    const blob = new Blob([vcardContent], { type: "text/vcard;charset=utf-8" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${userData.name}.vcf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    });
+                    const blob = new Blob([vcardContent], { type: "text/vcard;charset=utf-8" });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `${userData.name}.vcf`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            })
+            .catch(error => console.error("Erreur en chargeant client.json :", error));
     </script>
 
 </body>
