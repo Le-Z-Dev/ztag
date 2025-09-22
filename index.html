@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* RESET & BODY */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -18,14 +17,12 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            color: #fff;
+            color: #e8e8e8;
             text-align: center;
-            background: url("fond.png") no-repeat center center fixed;
+            background: url("fond.jpg") no-repeat center center fixed;
             background-size: cover;
-            overflow-x: hidden;
         }
 
-        /* CONTENEUR PRINCIPAL */
         .main-content {
             flex: 1;
             display: flex;
@@ -35,7 +32,6 @@
             padding: 20px;
         }
 
-        /* PHOTO DE PROFIL */
         .profile-container {
             width: 160px;
             height: 160px;
@@ -52,7 +48,6 @@
             object-fit: cover;
         }
 
-        /* NOM */
         h1 {
             font-size: 2rem;
             margin-bottom: 30px;
@@ -60,7 +55,6 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
-        /* ICÔNES */
         .icons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -92,7 +86,6 @@
             height: 70px;
         }
 
-        /* FOOTER */
         footer {
             margin-top: auto;
             margin-bottom: 20px;
@@ -105,7 +98,7 @@
             align-items: center;
             gap: 8px;
             font-weight: 600;
-            color: #fff;
+            color: #101010;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
@@ -119,7 +112,6 @@
             transform: scale(1.2);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 400px) {
             .icons {
                 grid-template-columns: repeat(3, 1fr);
@@ -153,24 +145,24 @@
     <div class="main-content">
         <!-- Photo de profil -->
         <div class="profile-container">
-            <img id="profile-pic" src="photo-profil.png" alt="Photo de profil">
+            <img id="profile-pic" src="" alt="Photo de profil">
         </div>
 
         <!-- Nom -->
-        <h1>Le Z</h1>
+        <h1 id="user-name"></h1>
 
         <!-- Icônes des applis -->
         <div class="icons">
-            <a href="vcard.vcf"><img src="vcard.png" alt="vCard"></a>
-            <a href="https://facebook.com/"><img src="facebook.png" alt="Facebook"></a>
-            <a href="https://wa.me/2290197456565"><img src="whatsapp.png" alt="WhatsApp"></a>
-            <a href="https://snapchat.com/"><img src="snapchat.png" alt="Snapchat"></a>
-            <a href="https://tiktok.com/"><img src="tiktok.png" alt="TikTok"></a>
-            <a href="https://instagram.com/"><img src="instagram.png" alt="Instagram"></a>
+            <a id="vcard-link" href="#" download="contact.vcf"><img src="vcard.png" alt="vCard"></a>
+            <a id="facebook-link" href="#"><img src="facebook.png" alt="Facebook"></a>
+            <a id="whatsapp-link" href="#"><img src="whatsapp.png" alt="WhatsApp"></a>
+            <a id="snapchat-link" href="#"><img src="snapchat.png" alt="Snapchat"></a>
+            <a id="tiktok-link" href="#"><img src="tiktok.png" alt="TikTok"></a>
+            <a id="instagram-link" href="#"><img src="instagram.png" alt="Instagram"></a>
         </div>
     </div>
 
-    <!-- Footer amélioré -->
+    <!-- Footer -->
     <footer>
         <div class="footer-text">
             <span>Ztag by</span>
@@ -180,6 +172,53 @@
             </a>
         </div>
     </footer>
+
+    <!-- Script pour injecter les données et générer vCard -->
+    <script>
+        const userData = {
+            name: "Le Z",
+            phone: "+2290197456565",
+            email: "contact@example.com",
+            photo: "photo-profil.png",
+            social: {
+                facebook: "https://facebook.com/",
+                whatsapp: "https://wa.me/2290197456565",
+                snapchat: "https://snapchat.com/",
+                tiktok: "https://tiktok.com/",
+                instagram: "https://instagram.com/"
+            }
+        };
+
+        // Injection de la photo et du nom
+        document.getElementById("profile-pic").src = userData.photo;
+        document.getElementById("user-name").textContent = userData.name;
+
+        // Injection des liens réseaux sociaux
+        document.getElementById("facebook-link").href = userData.social.facebook;
+        document.getElementById("whatsapp-link").href = userData.social.whatsapp;
+        document.getElementById("snapchat-link").href = userData.social.snapchat;
+        document.getElementById("tiktok-link").href = userData.social.tiktok;
+        document.getElementById("instagram-link").href = userData.social.instagram;
+
+        // Génération dynamique vCard
+        const vcardLink = document.getElementById("vcard-link");
+        vcardLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            const vcardContent = `
+BEGIN:VCARD
+VERSION:3.0
+FN:${userData.name}
+TEL;TYPE=CELL:${userData.phone}
+EMAIL:${userData.email}
+END:VCARD
+`.trim();
+            const blob = new Blob([vcardContent], { type: "text/vcard" });
+            const url = URL.createObjectURL(blob);
+            vcardLink.href = url;
+            vcardLink.click();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        });
+    </script>
 
 </body>
 
