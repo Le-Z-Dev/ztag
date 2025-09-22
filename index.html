@@ -17,9 +17,9 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            color: #e8e8e8;
+            color: #fff;
             text-align: center;
-            background: url("fond.jpg") no-repeat center center fixed;
+            background: url("images/fond.jpg") no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -38,7 +38,7 @@
             margin-bottom: 15px;
             border-radius: 50%;
             overflow: hidden;
-            border: 4px solid rgba(255, 255, 255, 0.8);
+            border: 4px solid rgba(31, 31, 31, 0.8);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
@@ -98,8 +98,8 @@
             align-items: center;
             gap: 8px;
             font-weight: 600;
-            color: #101010;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            color: #000000;
+            text-shadow: 1px 1px 3px rgba(107, 107, 107, 0.5);
         }
 
         .footer-text a img {
@@ -128,13 +128,13 @@
             }
 
             .icons a {
-                width: 70px;
-                height: 70px;
+                width: 55px;
+                height: 55px;
             }
 
             .icons img {
-                width: 70px;
-                height: 70px;
+                width: 30px;
+                height: 30px;
             }
         }
     </style>
@@ -153,12 +153,12 @@
 
         <!-- Icônes des applis -->
         <div class="icons">
-            <a id="vcard-link" href="#" download="contact.vcf"><img src="vcard.png" alt="vCard"></a>
-            <a id="facebook-link" href="#"><img src="facebook.png" alt="Facebook"></a>
-            <a id="whatsapp-link" href="#"><img src="whatsapp.png" alt="WhatsApp"></a>
-            <a id="snapchat-link" href="#"><img src="snapchat.png" alt="Snapchat"></a>
-            <a id="tiktok-link" href="#"><img src="tiktok.png" alt="TikTok"></a>
-            <a id="instagram-link" href="#"><img src="instagram.png" alt="Instagram"></a>
+            <a id="vcard-link" href="#"><img src="images/vcard.png" alt="vCard"></a>
+            <a id="facebook-link" href="#"><img src="images/facebook.png" alt="Facebook"></a>
+            <a id="whatsapp-link" href="#"><img src="images/whatsapp.png" alt="WhatsApp"></a>
+            <a id="snapchat-link" href="#"><img src="images/snapchat.png" alt="Snapchat"></a>
+            <a id="tiktok-link" href="#"><img src="images/tiktok.png" alt="TikTok"></a>
+            <a id="instagram-link" href="#"><img src="images/instagram.png" alt="Instagram"></a>
         </div>
     </div>
 
@@ -168,7 +168,7 @@
             <span>Ztag by</span>
             <a href="https://wa.me/2290197456565?text=Bonjour%20Le%20Z,%20je%20suis%20intéressé%20par%20le%20Ztag"
                 target="_blank">
-                <img src="logo.png" alt="Logo">
+                <img src="images/logo.png" alt="Logo">
             </a>
         </div>
     </footer>
@@ -179,7 +179,7 @@
             name: "Le Z",
             phone: "+2290197456565",
             email: "contact@example.com",
-            photo: "photo-profil.png",
+            photo: "images/photo-profil.png",
             social: {
                 facebook: "https://facebook.com/",
                 whatsapp: "https://wa.me/2290197456565",
@@ -201,9 +201,9 @@
         document.getElementById("instagram-link").href = userData.social.instagram;
 
         // Génération dynamique vCard
-        const vcardLink = document.getElementById("vcard-link");
-        vcardLink.addEventListener("click", function (e) {
+        document.getElementById("vcard-link").addEventListener("click", function (e) {
             e.preventDefault();
+
             const vcardContent = `
 BEGIN:VCARD
 VERSION:3.0
@@ -212,11 +212,14 @@ TEL;TYPE=CELL:${userData.phone}
 EMAIL:${userData.email}
 END:VCARD
 `.trim();
-            const blob = new Blob([vcardContent], { type: "text/vcard" });
-            const url = URL.createObjectURL(blob);
-            vcardLink.href = url;
-            vcardLink.click();
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+            const blob = new Blob([vcardContent], { type: "text/vcard;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `${userData.name}.vcf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         });
     </script>
 
