@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
+        /* RESET & BODY */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -17,29 +18,32 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            color: #333;
+            color: #fff;
             text-align: center;
             background: url("fond.jpg") no-repeat center center fixed;
             background-size: cover;
+            overflow-x: hidden;
         }
 
+        /* CONTENEUR PRINCIPAL */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /* centre verticalement */
             align-items: center;
-            /* centre horizontalement */
+            padding: 20px;
         }
 
+        /* PHOTO DE PROFIL */
         .profile-container {
-            width: 150px;
-            height: 150px;
+            width: 160px;
+            height: 160px;
             margin-bottom: 15px;
             border-radius: 50%;
             overflow: hidden;
-            border: 4px solid #444;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         .profile-container img {
@@ -48,12 +52,15 @@
             object-fit: cover;
         }
 
+        /* NOM */
         h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 30px;
             font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
+        /* ICÔNES */
         .icons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -66,17 +73,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #fff;
-            border-radius: 80%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
             width: 70px;
             height: 70px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
             text-decoration: none;
         }
 
         .icons a:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         .icons img {
@@ -84,14 +92,58 @@
             height: 70px;
         }
 
+        /* FOOTER */
         footer {
             margin-top: auto;
             margin-bottom: 20px;
+            font-size: 0.9rem;
         }
 
-        .logo {
+        .footer-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-text a img {
             width: 20px;
-            opacity: 0.8;
+            opacity: 0.9;
+            transition: transform 0.3s;
+        }
+
+        .footer-text a img:hover {
+            transform: scale(1.2);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 400px) {
+            .icons {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .profile-container {
+                width: 120px;
+                height: 120px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .icons a {
+                width: 55px;
+                height: 55px;
+            }
+
+            .icons img {
+                width: 30px;
+                height: 30px;
+            }
         }
     </style>
 </head>
@@ -118,14 +170,15 @@
         </div>
     </div>
 
-    <!-- Logo -->
+    <!-- Footer amélioré -->
     <footer>
-        <p style="margin:0; font-weight:600;">Ztag by
+        <div class="footer-text">
+            <span>Ztag by</span>
             <a href="https://wa.me/2290197456565?text=Bonjour%20Le%20Z,%20je%20suis%20intéressé%20par%20le%20Ztag"
                 target="_blank">
-                <img src="logo.png" alt="Logo" class="logo">
+                <img src="logo.png" alt="Logo">
             </a>
-        </p>
+        </div>
     </footer>
 
 </body>
