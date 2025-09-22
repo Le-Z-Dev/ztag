@@ -103,3 +103,108 @@
 </body>
 
 </html>
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer ma carte Ztag</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        input,
+        button {
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+        }
+
+        button {
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result-link {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #007bff;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Formulaire Ztag</h1>
+
+    <form id="client-form">
+        <input type="text" name="name" placeholder="Nom complet" required />
+        <input type="text" name="phone" placeholder="Téléphone" required />
+        <label>Photo de profil</label>
+        <input type="file" name="photoBackground" accept="image/*" required />
+        <input type="url" name="facebook" placeholder="Facebook" />
+        <input type="url" name="whatsapp" placeholder="WhatsApp" />
+        <input type="url" name="snapchat" placeholder="Snapchat" />
+        <input type="url" name="tiktok" placeholder="TikTok" />
+        <input type="url" name="instagram" placeholder="Instagram" />
+        <button type="submit">Créer ma carte</button>
+    </form>
+
+    <a id="result-link" target="_blank">Voir ma carte</a>
+
+    <script>
+        document.getElementById("client-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const file = form.photoBackground.files[0];
+            if (!file) return alert("Veuillez sélectionner une photo !");
+
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const userData = {
+                    name: form.name.value,
+                    phone: form.phone.value,
+                    photoBackground: reader.result,
+                    social: {
+                        facebook: form.facebook.value,
+                        whatsapp: form.whatsapp.value,
+                        snapchat: form.snapchat.value,
+                        tiktok: form.tiktok.value,
+                        instagram: form.instagram.value
+                    }
+                };
+
+                try {
+                    const response = await fetch('/upload-json', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userData })
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        const fileName = userData.name.replace(/\s+/g, '_') + '.json';
+                        const link = document.getElementById('result-link');
+                        link.href = `index.html?client=${fileName}`;
+                        link.style.display = 'block';
+                        alert("JSON créé et envoyé sur GitHub avec succès !");
+                    } else {
+                        alert("Erreur : " + result.error);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert("Erreur lors de l'envoi sur le serveur");
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+
+</body>
+
+</html>
