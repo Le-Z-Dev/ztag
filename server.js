@@ -16,7 +16,7 @@ app.use(express.json({ limit: '5mb' }));
 
 // Endpoint pour recevoir le JSON et l'envoyer sur GitHub
 app.post('/upload-json', async (req, res) => {
-    const { userData } = req.body;
+    const userData = req.body; // ✅ correction
 
     if (!userData || !userData.name) {
         return res.status(400).json({ success: false, error: 'Données utilisateur invalides.' });

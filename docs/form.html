@@ -64,7 +64,7 @@
                 const userData = {
                     name: form.name.value,
                     phone: form.phone.value,
-                    photoBackground: reader.result,
+                    photoBackground: reader.result, // ⚠ image encodée en Base64
                     social: {
                         facebook: form.facebook.value,
                         whatsapp: form.whatsapp.value,
@@ -78,7 +78,7 @@
                     const response = await fetch('https://ztag-server.onrender.com/upload-json', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userData })
+                        body: JSON.stringify(userData) // ✅ correction
                     });
 
                     const result = await response.json();
