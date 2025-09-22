@@ -58,8 +58,8 @@
         .icons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            /* Augmenté pour plus d'espace entre les icônes */
+            gap: 25px;
+            /* Espace entre les icônes sur desktop */
             max-width: 320px;
             margin-bottom: 50px;
         }
@@ -68,28 +68,41 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
             width: 70px;
             height: 70px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: none;
+            /* plus de fond blanc */
+            border-radius: 0;
+            /* plus de contour arrondi */
+            box-shadow: none;
+            /* plus d’ombre */
+            transition: transform 0.3s;
             text-decoration: none;
         }
 
         .icons a:hover {
             transform: scale(1.15);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         .icons img {
-            width: 70px;
-            height: 70px;
+            width: 100%;
+            /* remplissage complet du bloc */
+            height: 100%;
+            object-fit: contain;
+            /* garde la proportion de l’image */
         }
 
-        footer {
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+        /* Mobile */
+        @media (max-width: 400px) {
+            .icons {
+                gap: 20px;
+                /* plus d’espace sur mobile */
+            }
+
+            .icons a {
+                width: 60px;
+                height: 60px;
+            }
         }
 
         .footer-text {
