@@ -1,16 +1,22 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch'); // npm install node-fetch@2
 const app = express();
 
+// Sert le dossier 'docs' pour accéder à index.html, form.html, etc.
 app.use(express.static(path.join(__dirname, 'docs')));
-app.use(express.json({ limit: '5mb' })); // pour Base64 des images
+
+// Support JSON avec limite pour les images Base64
+app.use(express.json({ limit: '5mb' }));
 
 // Endpoint pour recevoir le JSON et l'envoyer sur GitHub
 app.post('/upload-json', async (req, res) => {
     const { userData } = req.body;
+
+    if (!userData || !userData.name) {
+        return res.status(400).json({ success: false, error: 'Données utilisateur invalides.' });
+    }
 
     const repoOwner = "Le-Z-Dev";
     const repoName = "ztag-clients";
@@ -33,15 +39,21 @@ app.post('/upload-json', async (req, res) => {
             })
         });
 
-        if (response.ok) res.json({ success: true });
-        else {
+        if (response.ok) {
+            return res.json({ success: true });
+        } else {
             const err = await response.json();
-            res.status(400).json({ success: false, error: err.message });
+            return res.status(400).json({ success: false, error: err.message });
         }
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        return res.status(500).json({ success: false, error: error.message });
     }
 });
 
-const PORT = 3000;
+// Pour accéder directement à form.html via URL
+app.get('/form.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'docs', 'form.html'));
+});
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Serveur lancé sur http://localhost:${PORT}`));
